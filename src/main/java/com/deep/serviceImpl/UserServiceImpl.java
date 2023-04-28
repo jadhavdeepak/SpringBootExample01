@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserById(long userId) {
+
 		/*Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent()){
 			return user.get();
@@ -44,7 +45,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> getAllUsers() {
-		return userRepository.findAll();
+		List<User> userList = null;
+		if (userRepository.findAll().isEmpty())
+			System.out.println("User not available in the database");
+		return (List<User>) userList;
 	}
 
 	@Override
@@ -54,6 +58,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void deleteUser(Long userId) {
-		userRepository.deleteById(userId);
+		if (userRepository.findById(userId)==null)
+			System.out.println("User not available");
+		else
+			userRepository.deleteById(userId);
 	}
 }
