@@ -4,24 +4,23 @@ import com.deep.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deep.model.User;
-import com.deep.repository.userRepository;
+import com.deep.entity.User;
+import com.deep.repository.UserRepository;
 import com.deep.service.UserService;
 
 import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	public userRepository userRepository;
+	public UserRepository userRepository;
 
 	@Override
 	public User createUser(User users) throws Exception {
 
 		User user = userRepository.findByUsername(users.getUsername());
+
 		if (user != null) {
-			System.out.println("User is already there !");
 			throw new Exception("User is already present !");
 		} else {
 			user = userRepository.save(users);
@@ -45,10 +44,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> getAllUsers() {
-		List<User> userList = null;
 		if (userRepository.findAll().isEmpty())
 			System.out.println("User not available in the database");
-		return (List<User>) userList;
+		List<User> userlist = (List<User>) userRepository.findAll();
+		userlist.sort((o1, o2) -> o1.getUserId().compareTo(o2.getUserId()));
+		return userlist;
 	}
 
 	@Override
@@ -57,10 +57,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteUser(Long userId) {
+	public User deleteUser(Long userId) {
 		if (userRepository.findById(userId)==null)
 			System.out.println("User not available");
 		else
 			userRepository.deleteById(userId);
+		return null;
 	}
 }

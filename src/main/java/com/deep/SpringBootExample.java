@@ -1,11 +1,7 @@
 package com.deep;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.deep.model.User;
-import com.deep.service.UserService;
 
 @SpringBootApplication
 public class SpringBootExample {
@@ -18,7 +14,6 @@ public class SpringBootExample {
 
 /*	@Override
 	public void run(String... args) throws Exception {
-		
 		System.out.println("Project Started !!");
 		
 		User users = new User();

@@ -1,11 +1,14 @@
 package com.deep.controller;
 
-import com.deep.model.User;
-import com.deep.serviceImpl.UserServiceImpl;
+import com.deep.entity.User;
+import com.deep.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.*;
 
@@ -13,73 +16,84 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+
+    @GetMapping("/")
+    String message(){
+        logger.info("Inside the normal method controller !");
+        return "This is normal method !";
+    }
 
     @PostMapping("/saveUser")
     public ResponseEntity<?> saveUser(@RequestBody User user) {
+        logger.info("Inside saveUser method of user controller !"+ user.getUserId());
         Map<String, Object> map = new LinkedHashMap<>();
        try {
            User userList = this.userService.createUser(user);
            map.put("status",1);
            map.put("message", "user added successfully !");
-//           map.put("data", userList);
            return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
        }catch (Exception e){
-           map.clear();
-           map.put("status",0);
-           map.put("message", "User is already available !");
-           return new ResponseEntity<>(map, HttpStatus.OK);
+           return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId){
-        return new ResponseEntity<>(userService.getUserById(userId) ,HttpStatus.OK);
+    public ResponseEntity<?> getUserById(@PathVariable Long userId){
+        logger.info("Inside getUserByID method of user controller !");
+        try {
+            User user = userService.getUserById(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers(){
+        logger.info("Inside getAllUsers method of user controller !");
         Map<String, Object> map = new LinkedHashMap<>();
-        List<User> userList = userService.getAllUsers();
-        Collections.sort(userList, (user1, user2) -> user1.getUsername().compareTo(user2.getUsername()));
-        System.out.println(userList);
         try {
+            List<User> userList = userService.getAllUsers();
             map.put("status",1);
             map.put("message", "All users fetch successfully !");
             map.put("data", userList);
             return new ResponseEntity<>(map,HttpStatus.OK);
         }catch (Exception e){
-            map.clear();
-            map.put("status",0);
-            map.put("message","No user found !");
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/updateUser")
     public ResponseEntity<?> updateUser(@RequestBody User user){
+        logger.info("Inside updateUser method of user controller !");
         Map<String, Object> map = new LinkedHashMap<>();
-        User users = userService.saveUser(user);
-        map.put("status",1);
-        map.put("message","User updated successfully !");
-        map.put("data",users);
-        return new ResponseEntity(map,HttpStatus.OK);
+        try {
+            User users = userService.saveUser(user);
+            map.put("status",1);
+            map.put("message","User updated successfully !");
+            map.put("data",users);
+            return new ResponseEntity(map,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUserById(@PathVariable Long userId){
+        logger.info("Inside deleteUserById method of user controller !");
         Map<String, Object> map = new LinkedHashMap<>();
         try {
-            userService.deleteUser(userId);
+            User User = userService.deleteUser(userId);
             map.put("staus",1);
             map.put("message","User deleted successfully !");
+            map.put("data",User);
             return new ResponseEntity(map, HttpStatus.OK);
         }catch (Exception e){
-            map.clear();
-            map.put("status",0);
-            map.put("message", "User Not found !");
-            return new ResponseEntity(map, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
