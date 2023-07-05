@@ -24,6 +24,6 @@ public class Address {
     private long pinCode;
 
     @ManyToOne
-    @JsonIgnore
+    @JoinColumn(name = "ua_fk", referencedColumnName = "userId")
     private User user;
 }

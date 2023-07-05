@@ -22,7 +22,7 @@ public class Department {
     private String deptDesc;
 
     @OneToOne
-    @JoinColumn(name = "ud_fk", nullable = false)
+    @JoinColumn(name = "ud_fk", referencedColumnName = "userId")
     private User user;
 
 }

@@ -38,7 +38,6 @@ public class User {
     private Department department;
 
     @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ua_fk", referencedColumnName = "userId")
     private List<Address> addresses;
 
 }
