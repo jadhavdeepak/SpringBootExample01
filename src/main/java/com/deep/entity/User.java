@@ -29,11 +29,11 @@ public class User {
     private String userEmail;
     private String phone;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 //    @JoinColumn(name = "roleId", referencedColumnName = "userId")
     private Set<UserRole> userRoles = new HashSet<>();;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 //    @JoinColumn(name = "addressId", referencedColumnName = "userId")
     private Set<Address> addresses = new HashSet<>();
 

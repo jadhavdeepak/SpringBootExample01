@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService{
 	private ModelMapper modelMapper;
 
 	private UserDto mapUserToUserDetailsDto(User user){
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		UserDto userRequest = new UserDto();
 		userRequest = modelMapper.map(user, UserDto.class);
 		return userRequest;
 	}
 
 	private User mapUserDetailsDtoToUser(UserDto userDto){
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		User userResponce = new User();
 		userResponce = modelMapper.map(userDto, User.class);
 		return userResponce;
