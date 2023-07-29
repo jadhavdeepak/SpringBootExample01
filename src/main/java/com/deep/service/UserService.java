@@ -1,15 +1,16 @@
 package com.deep.service;
 
+import com.deep.dto.UserDto;
 import com.deep.entity.User;
-import org.springframework.stereotype.Service;
+import com.deep.exception.UserNotFoundException;
 
-import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
-	User createUser(User users) throws Exception;
+	public UserDto createUser(UserDto userRequest) throws UserNotFoundException;
 	User getUserById(long userId);
-	public List<User> getAllUsers();
+	public Set<UserDto> getAllUsers();
 	User saveUser(User user);
 	User deleteUser(Long userId);
 }

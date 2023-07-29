@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.deep</groupId>
-	<artifactId>SpringBootExample</artifactId>
+	<artifactId>SpringBootProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringBootCRUD</name>
-	<description>Demo project for crud application</description>
+	<name>SpringBootProject</name>
+	<description>SpringBoot project for practice application</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,11 +51,11 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<!--<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.6.2</version>
-		</dependency>-->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -76,5 +76,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

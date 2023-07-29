@@ -1,7 +1,10 @@
 package com.deep.controller;
 
+import com.deep.dto.UserDto;
 import com.deep.entity.User;
+import com.deep.exception.UserNotFoundException;
 import com.deep.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +18,11 @@ import java.util.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private ModelMapper modelMapper;
     @GetMapping("/")
     String message(){
         logger.info("Inside the normal method controller !");
@@ -28,15 +30,12 @@ public class UserController {
     }
 
     @PostMapping("/saveUser")
-    public ResponseEntity<?> saveUser(@RequestBody User user) {
-        logger.info("Inside saveUser method of user controller !"+ user.getUserId());
-        Map<String, Object> map = new LinkedHashMap<>();
+    public ResponseEntity<?> saveUser(@RequestBody UserDto userRequest) {
+        logger.info("Inside saveUser method of user controller !"+ userRequest.getUserId());
        try {
-           User userList = this.userService.createUser(user);
-           map.put("status",1);
-           map.put("message", "user added successfully !");
-           return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
-       }catch (Exception e){
+           UserDto userResponce = userService.createUser(userRequest);
+           return new ResponseEntity<>(userResponce, HttpStatus.ACCEPTED);
+       } catch (UserNotFoundException e) {
            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
@@ -57,7 +56,7 @@ public class UserController {
         logger.info("Inside getAllUsers method of user controller !");
         Map<String, Object> map = new LinkedHashMap<>();
         try {
-            List<User> userList = userService.getAllUsers();
+            Set<UserDto> userList = userService.getAllUsers();
             map.put("status",1);
             map.put("message", "All users fetch successfully !");
             map.put("data", userList);
@@ -96,4 +95,4 @@ public class UserController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
+  }

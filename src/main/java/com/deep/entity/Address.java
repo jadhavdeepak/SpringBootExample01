@@ -5,7 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -16,14 +17,51 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long addressId;
-    @NonNull
     private String street;
-    @NonNull
     private String city;
-    @NonNull
     private long pinCode;
 
     @ManyToOne
-    @JoinColumn(name = "ua_fk", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public long getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(long pinCode) {
+        this.pinCode = pinCode;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
